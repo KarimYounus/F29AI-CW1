@@ -16,7 +16,7 @@ public class Main {
 		return child;
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		// Create some states
 		Node root = new Node(new IntState(0));
 		Node goal = new Node(new IntState(5, true));
