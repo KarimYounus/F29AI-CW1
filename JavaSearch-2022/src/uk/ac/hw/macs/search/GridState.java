@@ -2,6 +2,7 @@ package uk.ac.hw.macs.search;
 
 import uk.ac.hw.macs.search.State;
 
+/* A state representing grid locations and square value*/
 
 public class GridState implements State{
 
@@ -35,11 +36,11 @@ public class GridState implements State{
         this.goal = goal;
     }
 
-    public GridState(int x, int y, int squareCost, boolean goal, Node target) throws Exception {
+    public GridState(int x, int y, int squareCost, Node target) throws Exception {
         this.x = x;
         this.y = y;
         this.squareCost = squareCost;
-        this.goal = goal;
+        this.goal = false;
         this.heuristic = calculateHeuristic(target);
     }
 
@@ -63,14 +64,16 @@ public class GridState implements State{
     }
 
     //Calculated using Manhattan distance
-    private int calculateHeuristic(Node target) throws Exception {
+    public int calculateHeuristic(Node target) throws Exception {
 
         //Check that target node is indeed the goal node, if not then throw exception
         if (!target.isGoal()) {
             throw new Exception("Node is not a goal node, can't calculate heuristic");
         }
 
-//        int manhattenDistance = Math.abs(target.getValue().
+//        int manhattenDistance = Math.abs(target.getValue().get
+
+
 
         return 0;
     }
