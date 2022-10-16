@@ -1,5 +1,6 @@
 package uk.ac.hw.macs.search.example;
 
+import uk.ac.hw.macs.search.GridState;
 import uk.ac.hw.macs.search.Node;
 import uk.ac.hw.macs.search.SearchOrder;
 import uk.ac.hw.macs.search.SearchProblem;
@@ -15,7 +16,7 @@ public class Main {
 		return child;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// Create some states
 		Node root = new Node(new IntState(0));
 		Node goal = new Node(new IntState(5, true));

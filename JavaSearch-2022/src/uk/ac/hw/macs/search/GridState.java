@@ -6,7 +6,6 @@ import uk.ac.hw.macs.search.State;
 
 public class GridState implements State{
 
-
     private int x, y;
     private int squareCost;
     private boolean goal;
@@ -71,11 +70,11 @@ public class GridState implements State{
             throw new Exception("Node is not a goal node, can't calculate heuristic");
         }
 
-//        int manhattenDistance = Math.abs(target.getValue().get
+        //Get goal node coordinates
+        int[] goalXY = ((GridState) target.getValue()).getXY();
 
-
-
-        return 0;
+        //Calculate mDist
+        return Math.abs(goalXY[0]-this.x) + Math.abs(goalXY[y]-this.y);
     }
 
 }
