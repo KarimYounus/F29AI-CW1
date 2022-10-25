@@ -6,37 +6,26 @@ import uk.ac.hw.macs.search.State;
 
 public class GridState implements State{
 
-    private int x, y, squareCost, heuristic;
+    private int x, y, heuristic;
     private boolean goal;
     
     public GridState(int x, int y) {
         this.x = x;
         this.y = y;
-        this.squareCost = 1;
         this.goal = false;
         this.heuristic = 0;
     }
 
-    public GridState(int x, int y, int squareCost) {
+    public GridState(int x, int y, boolean goal) {
         this.x = x;
         this.y = y;
-        this.squareCost = squareCost;
-        this.goal = false;
-        this.heuristic = 0;
-    }
-
-    public GridState(int x, int y, int squareCost, boolean goal) {
-        this.x = x;
-        this.y = y;
-        this.squareCost = squareCost;
         this.heuristic = 0;
         this.goal = goal;
     }
 
-    public GridState(int x, int y, int squareCost, Node target) throws Exception {
+    public GridState(int x, int y, Node target) throws Exception {
         this.x = x;
         this.y = y;
-        this.squareCost = squareCost;
         this.goal = false;
         this.heuristic = calculateHeuristic(target);
     }
@@ -46,9 +35,9 @@ public class GridState implements State{
         return new int[] {this.x, this.y};
     }
 
-    public int getSquareCost() {
-        return this.squareCost;
-    }
+//    public int getSquareCost() {
+//        return this.squareCost;
+//    }
 
     @Override
     public int getHeuristic() {
@@ -61,7 +50,7 @@ public class GridState implements State{
     }
 
     //Calculated using Manhattan distance
-    public int calculateHeuristic(Node target) throws Exception {
+    private int calculateHeuristic(Node target) throws Exception {
 
         //Check that target node is indeed the goal node, if not then throw exception
         if (!target.isGoal()) {
@@ -73,7 +62,10 @@ public class GridState implements State{
         int[] goalXY = ((GridState) target.getValue()).getXY();
 
         //Calculate mDist
-        return Math.abs(goalXY[0]-this.x) + Math.abs(goalXY[y]-this.y);
+        return Math.abs(goalXY[0]-this.x) + Math.abs(goalXY[1]-this.y);
     }
+
+    @Override
+    public String toString() { return "GridState [XY=" + x + y + ", Heuristic=" + heuristic + ", Goal=" + goal + "]";}
 
 }

@@ -25,7 +25,6 @@ public class FringeNode {
 			gValue += parent.gValue;
 		}
 	}
-	
 	/**
 	 * @return The "f" value: the cost of getting to this node plus the estimated heuristic value.
 	 */

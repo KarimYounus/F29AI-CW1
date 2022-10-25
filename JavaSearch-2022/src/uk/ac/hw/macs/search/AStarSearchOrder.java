@@ -16,7 +16,7 @@ public class AStarSearchOrder implements SearchOrder{
             FringeNode newNode = new FringeNode(child.node, parent, child.cost);
 
             //Get fVal of node to be added to fringe
-            int fVal = newNode.getFValue();
+            int currentFVal = newNode.getFValue();
 
             /*Sorted insertion of nodes into fringe by order of increasing fVal*/
 
@@ -24,15 +24,18 @@ public class AStarSearchOrder implements SearchOrder{
             if (frontier.isEmpty()) frontier.add(newNode);
 
             //If inserting into head of list
-            else if (fVal < frontier.get(0).getFValue()) frontier.add(0, newNode);
+            else if (currentFVal < frontier.get(0).getFValue()) frontier.add(0, newNode);
 
-            //Else sorted insert into list
-            else {
+            //Else sorted insert into middle of list
+            else if (true) {
                 for (int i = 1; i < frontier.size(); i++) {
                     FringeNode node = frontier.get(i);
-                    if (fVal < node.getFValue()) frontier.add(i-1, newNode);
+                    if (currentFVal < node.getFValue()) frontier.add(i-1, newNode);
                 }
             }
+
+            //Else add to end
+            else frontier.add(frontier.size()-1, newNode);
         }
     }
 }
