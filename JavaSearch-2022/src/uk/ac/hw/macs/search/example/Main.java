@@ -18,116 +18,128 @@ public class Main {
 		return child;
 	}
 
-	private static boolean isEdge(int x, int y) {
-		if ((x<1 || x>4) && (y<1 || y>2)) return true;
+	//Method to check if grid square is a wall for problem grid 1
+	private static boolean isWallG1(int x, int y) {
+		if ((x==2 && y==2) || (x==3 && y==2) || (x==4 && y==1)) return true;
 		else return false;
 	}
 
+	//Method to check if grid square is a wall for problem grid 2
+	private static boolean isWallG2(int x, int y) {
+		if ((x==1 && y==1) || (x==2 && y==1) || (x==3 && y==1) || (x==2 && y==2)) return true;
+		else return false;
+	}
+
+	//Method to check if grid square is grey for problem grid 1
 	private static int squareCostG1(int x, int y) {
 		if ((x == 1 && y == 0) || (x==1 && y ==1) || (x==2 && y==3) || (x==3 && y==3)) return 3;
 		else return 1;
 	}
 
-	public static void main(String[] args) throws Exception {
-		// Create some states
-//		Node root = new Node(new IntState(0));
-//		Node goal = new Node(new IntState(5, true));
-//		Node child = addChild(1, false, root);
-//		child = addChild(2, false, child);
-//		child = addChild(3, false, child);
-//		addChild(4, false, child);
-//		root.addChild(goal, 1);
+	private static int squareCostG2(int x, int y) {
+		if ((x == 0 && y == 1) || (x==4 && y ==1) || (x==1 && y==2) || (x==5 && y==2) || (x==1 && y==3) || (x==2 && y==3)) return 3;
+		else return 1;
+	}
 
+	public static void main(String[] args) throws Exception {
 		int gridCols = 6;
 		int gridRows = 4;
+
 
 		//Problem grid 1______
 		Node goal = new Node(new GridState(4,2,true));
 
 		//Init grid
-		Node[][] firstGrid = new Node[gridCols][gridRows];
+		Node[][] grid = new Node[gridCols][gridRows];
 
-		//Fill grid
+		//Fill grid with nodes
 		for (int x = 0; x < gridCols; x++) {
 			for (int y = 0; y < gridRows; y++) {
-
-				//If black square, don't add node	MAYBE SET TO EMPTY NODE OR SOMETHING
-				if ((x==2 && y==2) || (x==3 && y==2) || (x==4 && y==1)) {}
-
-				//Else fill with node
-				else
-					firstGrid[x][y] = new Node(new GridState(x,y,goal));
+					grid[x][y] = new Node(new GridState(x,y,goal));
 			}
 		}
 
-		//Add goal
-		firstGrid[4][2] = goal;
+		//Add goal node
+		grid[4][2] = goal;
 
 		//Link nodes
 		for (int x = 0; x < gridCols; x++) {
 			for (int y = 0; y < gridRows; y++) {
 
-				//If square is black
-				if (firstGrid[x][y]==null) continue;
+				//If square is a wall, ignore
+				if (isWallG1(x,y)) continue;
 
 				//Add flags
 				boolean addLeft = true,addRight = true,addTop = true,addBott = true;
+
 				//Check left
 				if (x == 0) addLeft = false;
 				//Check right
 				if (x == 5) addRight = false;
-				//Check Top
+				//Check above
 				if (y == 0) addTop = false;
-				//Check Bottom
+				//Check below
 				if (y == 3) addBott = false;
-				if (addLeft) firstGrid[x][y].addChild(firstGrid[x-1][y],squareCostG1(x-1,y));
-				if (addRight) firstGrid[x][y].addChild(firstGrid[x+1][y],squareCostG1(x+1,y));
-				if (addTop) firstGrid[x][y].addChild(firstGrid[x][y-1],squareCostG1(x,y+1));
-				if (addBott) firstGrid[x][y].addChild(firstGrid[x][y+1],squareCostG1(x,y-1));
+
+				//Link children to current nod based on flags and check for walls
+				if (addLeft && !isWallG1(x-1,y)) grid[x][y].addChild(grid[x-1][y],squareCostG1(x-1,y));
+				if (addRight && !isWallG1(x+1,y)) grid[x][y].addChild(grid[x+1][y],squareCostG1(x+1,y));
+				if (addTop && !isWallG1(x,y-1)) grid[x][y].addChild(grid[x][y-1],squareCostG1(x,y+1));
+				if (addBott && !isWallG1(x,y+1)) grid[x][y].addChild(grid[x][y+1],squareCostG1(x,y-1));
 			}
 		}
 
 
+		//Problem grid 2______
+		Node goal2 = new Node(new GridState(3,3,true));
 
+		//Init grid
+		Node[][] grid2 = new Node[gridCols][gridRows];
 
-//		//Row 2 Header Node
-//		Node r2 = addChild(1,2,1,root,goal);
+		//Fill grid with nodes
+		for (int x = 0; x < gridCols; x++) {
+			for (int y = 0; y < gridRows; y++) {
+				grid2[x][y] = new Node(new GridState(x,y,goal));
+			}
+		}
 
-//		//First 2 rows . . .
-//		Node child = addChild(2,1,2,root, goal);
-//		Node child2 = addChild(2,2,2,r2, goal);
-//		child = addChild(3,1,1,child,goal);
-//		child2 = addChild(3,2,1,child,goal);
-//		child = addChild(4,1,1,child,goal);
-//		child2 = addChild(4,2,1,child,goal);
-//		child = addChild(5,1,1,child,goal);
-//		child2 = addChild(5,2,3,child,goal);
-//		child = addChild(6,1,1,child,goal);
-//		child2 = addChild(6,2,1,child,goal);
-//
-//		//Second 2 rows . . .
-//		child = addChild(1,3,1,r2,goal);
-//		child2 = addChild(1,4,1,child,goal);
-//		child = addChild(2,3,1,child,goal);
-//		child2 = addChild(2,4,1,child,goal);
-//		child = addChild(3,3,3,child,goal);
-//		child2 = addChild(3,4,2,child,goal);
-//		child = addChild(4,3,3,child,goal);
-//		child2 = addChild(4,4,2,child,goal);
-//		child.addChild(goal,1);
-//		child = goal;
-//		child2 = addChild(5,4,1,goal,goal);
-//		child = addChild(6,3,1,goal,goal);
-//		child2 = addChild(6,4,1,child,goal);
+		//Add goal node
+		grid2[4][2] = goal2;
 
-		// Run the search
+		//Link nodes
+		for (int x = 0; x < gridCols; x++) {
+			for (int y = 0; y < gridRows; y++) {
+
+				//If square is a wall, ignore
+				if (isWallG2(x,y)) continue;
+
+				//Add flags
+				boolean addLeft = true,addRight = true,addTop = true,addBott = true;
+
+				//Check left
+				if (x == 0) addLeft = false;
+				//Check right
+				if (x == 5) addRight = false;
+				//Check above
+				if (y == 0) addTop = false;
+				//Check below
+				if (y == 3) addBott = false;
+
+				//Link children to current nod based on flags and check for walls
+				if (addLeft && !isWallG2(x-1,y)) grid2[x][y].addChild(grid2[x-1][y],squareCostG2(x-1,y));
+				if (addRight && !isWallG2(x+1,y)) grid2[x][y].addChild(grid2[x+1][y],squareCostG2(x+1,y));
+				if (addTop && !isWallG2(x,y-1)) grid2[x][y].addChild(grid2[x][y-1],squareCostG2(x,y+1));
+				if (addBott && !isWallG2(x,y+1)) grid2[x][y].addChild(grid2[x][y+1],squareCostG2(x,y-1));
+			}
+		}
+
+		//Run the search
 		SearchOrder order = new AStarSearchOrder();
 		SearchProblem problem = new SearchProblem(order);
-		problem.doSearch(firstGrid[0][0]);
 
+		//Uncomment either row below for respective grid search
 
-//		SearchOrder order = new BreadthFirstSearchOrder();
-//		SearchProblem problem = new SearchProblem(order);
-//		problem.doSearch(root);
+//		problem.doSearch(grid[0][0]);
+		problem.doSearch(grid2[0][0]);
 	}
 }

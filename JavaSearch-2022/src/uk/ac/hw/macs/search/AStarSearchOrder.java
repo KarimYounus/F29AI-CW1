@@ -10,6 +10,8 @@ public class AStarSearchOrder implements SearchOrder{
     public void addToFringe(List<FringeNode> frontier, FringeNode parent, Set<ChildWithCost> children) {
         //For loop to loop through children to be added to fringe
         for (ChildWithCost child : children) {
+            boolean insert = true;
+
             //Nodes need to be added in order of increase f value (cost + heuristic cost)
 
             //New node to be added to Fringe
@@ -21,21 +23,28 @@ public class AStarSearchOrder implements SearchOrder{
             /*Sorted insertion of nodes into fringe by order of increasing fVal*/
 
             //If fringe is empty, simply add
-            if (frontier.isEmpty()) frontier.add(newNode);
+            if (frontier.isEmpty()) {
+                frontier.add(newNode);
+                continue;
+            }
 
             //If inserting into head of list
-            else if (currentFVal < frontier.get(0).getFValue()) frontier.add(0, newNode);
+            if (currentFVal < frontier.get(0).getFValue()) {
+                frontier.add(0, newNode);
+                continue;
+            }
 
             //Else sorted insert into middle of list
-            else if (true) {
-                for (int i = 1; i < frontier.size(); i++) {
-                    FringeNode node = frontier.get(i);
-                    if (currentFVal < node.getFValue()) frontier.add(i-1, newNode);
+            for (int i = 1; i < frontier.size(); i++) {
+                if (currentFVal < frontier.get(i).getFValue()) {
+                    frontier.add(i-1, newNode);
+                    insert = false;
+                    break;
                 }
             }
 
             //Else add to end
-            else frontier.add(frontier.size()-1, newNode);
+            if(insert) frontier.add(frontier.size()-1, newNode);
         }
     }
 }

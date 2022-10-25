@@ -1,7 +1,5 @@
 package uk.ac.hw.macs.search;
 
-import uk.ac.hw.macs.search.State;
-
 /* A state representing grid locations and square value*/
 
 public class GridState implements State{
@@ -34,10 +32,6 @@ public class GridState implements State{
     public int[] getXY() {
         return new int[] {this.x, this.y};
     }
-
-//    public int getSquareCost() {
-//        return this.squareCost;
-//    }
 
     @Override
     public int getHeuristic() {
